@@ -1,50 +1,87 @@
-# React + TypeScript + Vite
+# Welcome to your Lovable project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project info
 
-Currently, two official plugins are available:
+## Introduction
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- PixaGram is a clone of Instagram.
 
-## Expanding the ESLint configuration
+## What technologies are used for this project?
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## This project is built with .
 
-- Configure the top-level `parserOptions` property like this:
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn-ui
+- Clerk Authentication
+- Supabase
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Core Features (Essential):
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+# User Authentication:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- Sign up with email/password.
+- Login/logout.
+- Social login (Google, GitHub ).
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+# User Profiles:
+
+- Profile creation (username, bio, profile picture).
+- View other users' profiles.
+- Edit profile information.
+
+# Post Creation:
+
+- Upload images (and potentially short videos).
+- Add captions/descriptions to posts.
+- Hashtag support (basic parsing and display).
+
+# Post Display:
+
+- Display posts in a feed (reverse chronological order).
+- Display post images/videos.
+- Display post captions and timestamps.
+- Like/unlike posts.
+- Display number of likes.
+
+# Following/Followers:
+
+-Follow/unfollow other users.
+-Display a list of followers and following.
+-Display posts from followed users in the main feed.
+
+## Secondary Features (Enhancements):
+
+# Comments:
+
+- Add comments to posts.
+- Display comments below posts.
+- Like/unlike comments (optional).
+
+# Search:
+
+- Search for users by username.
+- Search for posts by hashtags (optional).
+
+# Notifications:
+
+- Like, comment, and follow notifications
+- Direct message notifications
+
+# Settings:
+
+- Account privacy settings
+- Password change
+- Email and phone number verification
+- Two-factor authentication
+
+# Direct Messaging (DM - Basic):
+
+- Send text messages to other users.
+- Display message history.
+
+# Stories (Simplified):
+
+- Upload temporary photos/videos (disappearing after 24 hours).
+- View stories from followed users.
