@@ -43,10 +43,13 @@ export default function Home() {
           </Card>
         </div>
       ) : (
-        <div>
+        <div className="h-full w-full overflow-auto">
           {user?.fullName} <br />
           {user?.username} <br />
-          {user?.id}
+          {user?.id} <br />
+          {user.imageUrl} <br />
+          {user.emailAddresses[0].emailAddress} <br />
+          {user.firstName} {user.lastName}
         </div>
       )}
     </div>

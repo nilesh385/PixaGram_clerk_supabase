@@ -21,10 +21,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Post, postSchema } from "@/types/types";
 import { Input } from "../ui/input";
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { useUser } from "@clerk/clerk-react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePost() {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+  const { user } = useUser();
 
   const form = useForm<Post>({
     resolver: zodResolver(postSchema),
@@ -54,6 +61,41 @@ export default function CreatePost() {
   };
   const handleCreatePost = async (values: Post) => {
     console.log(values);
+    try {
+      let image_url = "";
+      if (image) {
+        const fileExt = image.name.split(".").pop();
+        const filePath = `${crypto.randomUUID()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from("images")
+          .upload(filePath, image);
+
+        if (uploadError) {
+          console.log(uploadError);
+          toast.error(uploadError.message);
+          return;
+        }
+
+        const { data: publicUrl } = await supabase.storage
+          .from("images")
+          .getPublicUrl(filePath);
+        image_url = publicUrl.publicUrl;
+      }
+      const { error: postError } = await supabase.from("posts").insert({
+        user_id: user?.id,
+        title: values.title,
+        description: values?.description,
+        image: image_url,
+      });
+      if (postError) {
+        toast.error(postError.message);
+        return;
+      }
+      toast.success("Post created successfully");
+      navigate("/");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   return (

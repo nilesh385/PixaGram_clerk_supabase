@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "./components/theme/theme-provider.tsx";
+import { Toaster } from "sonner";
 
 // Import your Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
       <ClerkProvider afterSignOutUrl={"/"} publishableKey={PUBLISHABLE_KEY}>
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
           <App />
+          <Toaster />
         </ThemeProvider>
       </ClerkProvider>
     </BrowserRouter>

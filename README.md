@@ -1,4 +1,12 @@
-# Welcome to your Lovable project
+#### Link
+
+# run the following command first
+
+- ngrok http --url=relaxing-octopus-brief.ngrok-free.app 3000
+
+# then open the following link
+
+- https://relaxing-octopus-brief.ngrok-free.app
 
 ## Project info
 
