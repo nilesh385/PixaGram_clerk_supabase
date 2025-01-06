@@ -1,12 +1,20 @@
 #### Link
 
-# run the following command first
+# Run the following command first to run the backend server for clerk webhook.
 
 - ngrok http --url=relaxing-octopus-brief.ngrok-free.app 3000
 
-# then open the following link
+# Here's the forwarding url of it (just for information)
 
 - https://relaxing-octopus-brief.ngrok-free.app
+
+# if the forwarding url is different than the above url,
+
+- then go to clerk dashboard -> webhooks
+- create new endpoint.
+- add the forwading url in the endpoint and also add '/app/webhooks' in it.
+- example url -> https://relaxing-octopus-brief.ngrok-free.app/api/webhooks
+- now everything should be working properly.
 
 ## Project info
 

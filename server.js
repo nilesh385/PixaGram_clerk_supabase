@@ -10,7 +10,6 @@ const app = express();
 dotenv.config({ path: "./.env" });
 const supabaseUrl = process.env.VITE_SUPABASE_ANON_URL;
 const supabaseKey = process.env.VITE_SUPABASE_API_KEY;
-
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.use(
@@ -28,8 +27,6 @@ app.use(express.json());
 app.post(
   "/api/webhooks",
   // This is a generic method to parse the contents of the payload.
-  // Depending on the framework, packages, and configuration, this may be
-  // different or not required.
 
   async (req, res) => {
     const SIGNING_SECRET = process.env.VITE_SIGNING_SECRET;
@@ -59,7 +56,6 @@ app.post(
         message: "Error: Missing svix headers",
       });
     }
-    // console.log(svix_signature);
     let evt;
 
     // Attempt to verify the incoming webhook
@@ -80,19 +76,9 @@ app.post(
     }
 
     // Do something with payload
-    // For this guide, log payload to console
-    const { id } = evt.data;
-    const eventType = evt.type;
-    // console.log(
-    //   `Received webhook with ID ${id} and event type of ${eventType}`
-    // );
-    // console.log("Webhook payload:", evt.data);
 
     //creating user profile
     if (evt.type === "user.created") {
-      // console.log("userId:", evt.data);
-      // console.log("Hii=================================", evt.data.id);
-
       const { error: createProfileError } = await supabase
         .from("profiles")
         .insert({
@@ -114,6 +100,7 @@ app.post(
       const { error: updateProfileError } = await supabase
         .from("profiles")
         .update({
+          username: evt.data.username,
           fullname: evt.data.first_name + " " + evt.data.last_name,
           image: evt.data.image_url,
         })
