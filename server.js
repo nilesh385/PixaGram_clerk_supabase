@@ -19,9 +19,7 @@ app.use(
     Credential: true,
   })
 );
-app.get("/message", (_, res) => {
-  res.send("Hello from express!");
-});
+
 app.use(express.json());
 
 app.post(
@@ -94,6 +92,25 @@ app.post(
           createProfileError.message
         );
       } else console.log("Profile Created...");
+
+      const emptyFile = new File([], "", { type: "" });
+      // Construct the folder path
+      const folderPath = `users/${evt.data.id}/`;
+
+      // Create the folder in the 'images' bucket
+      const { error: createFolderError } = await supabase.storage
+        .from("images")
+        .upload(folderPath + "placeholder.txt", emptyFile, {
+          upsert: true,
+        });
+      if (createFolderError) {
+        console.log(
+          "Error while creating the folder:: ",
+          createFolderError.message
+        );
+      } else {
+        console.log("Folder Created...");
+      }
     }
     // update the user profile
     else if (evt.type === "user.updated") {

@@ -1,4 +1,4 @@
-import { PlusIcon, Upload, X } from "lucide-react";
+import { Loader2, PlusIcon, Upload, X } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -21,14 +21,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Post, postSchema } from "@/types/types";
 import { Input } from "../ui/input";
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { useUser } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import useSupabaseClient from "@/hooks/useSupabaseClient";
 
 export default function CreatePost() {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const supabase = useSupabaseClient();
 
   const navigate = useNavigate();
   const { user } = useUser();
@@ -60,23 +62,24 @@ export default function CreatePost() {
     setImagePreview(null);
   };
   const handleCreatePost = async (values: Post) => {
-    console.log(values);
+    if (!supabase) return toast.error("Database error...");
+    if (!values.title) return toast.error("Title is required...");
     try {
+      setLoading(true);
       let image_url = "";
       if (image) {
         const fileExt = image.name.split(".").pop();
-        const filePath = `${crypto.randomUUID()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage
+        const filePath = `users/${user?.id}/${crypto.randomUUID()}.${fileExt}`;
+        const { error: uploadError } = await supabase?.storage
           .from("images")
           .upload(filePath, image);
 
         if (uploadError) {
-          console.log(uploadError);
-          toast.error(uploadError.message);
+          toast.error("Upload Image Error: " + uploadError.message);
           return;
         }
 
-        const { data: publicUrl } = await supabase.storage
+        const { data: publicUrl } = supabase?.storage
           .from("images")
           .getPublicUrl(filePath);
         image_url = publicUrl.publicUrl;
@@ -85,16 +88,22 @@ export default function CreatePost() {
         user_id: user?.id,
         title: values.title,
         description: values?.description,
-        image: image_url,
+        image: image_url || null,
       });
       if (postError) {
         toast.error(postError.message);
         return;
       }
+      setImage(null);
+      setImagePreview(null);
+
       toast.success("Post created successfully");
-      navigate("/");
+      navigate("/ownPosts");
     } catch (error: any) {
       toast.error(error.message);
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -126,7 +135,12 @@ export default function CreatePost() {
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="Title..." id="title" {...field} />
+                      <Input
+                        placeholder="Title..."
+                        id="title"
+                        {...field}
+                        required
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -198,7 +212,9 @@ export default function CreatePost() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Create Post</Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? <Loader2 className="animate-spin" /> : "Create Post"}
+              </Button>
             </form>
           </Form>
         </DialogContent>

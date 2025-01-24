@@ -132,4 +132,18 @@
   body {
     @apply bg-background text-foreground;
   }
+  *::-webkit-scrollbar {
+    width: 6px;
+  }
+  *::-webkit-scrollbar-thumb {
+    border-radius: 1rem; /* Round the edges */
+  }
+  *::-webkit-scrollbar-track {
+    border-radius: 1rem;
+    scroll-behavior: smooth;
+  }
+  * {
+    scrollbar-width: thin; /* Set scrollbar width */
+    scrollbar-color: #5f5f5f #f0f0f0; /*Set thumb and track colors*/
+  }
 }
