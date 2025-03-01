@@ -26,7 +26,7 @@
 
 ## This project is built with .
 
-- React
+- React JS
 - TypeScript
 - Tailwind CSS
 - shadcn-ui

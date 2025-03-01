@@ -4,7 +4,7 @@ import CreatePost from "./components/posts/CreatePost";
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
 import PostContainer from "./components/posts/PostContainer";
-import SearchContainer from "./components/search/SearchContainer";
+import SearchContainer from "./components/user-search/SearchContainer";
 
 export default function App() {
   const { isSignedIn } = useAuth();
